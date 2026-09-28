@@ -1,48 +1,54 @@
+--[[
 
--- Garante uma semente aleatória diferente a cada execução
+Definir uma lista com 5 palavras à sua escolha;
+Escolher uma palavra aleatoriamente;
+
+Criar o loop principal contendo:
+
+Exibir a palavra escolhida com asteriscos nas letras que ainda não foram descobertas;
+
+Permitir até 5 tentativas erradas;
+
+O usuário deve escolher uma letra por vez.
+]]
+
+
+
+
 math.randomseed(os.time())
 
--- 1. Definir uma lista com 5 palavras
 local palavras = {
-    "desenvolvimento",
-    "logica",
-    "algoritmo",
+    "coelho",
+    "ventilador",
+    "onepiece",
     "computador",
     "programa"
 }
 
--- Variável que controla se o jogador deseja continuar jogando
 local jogarNovamente = true
 
--- LOOP DAS PARTIDAS
 while jogarNovamente do
 
-    -- 2. Escolher uma palavra aleatoriamente
     local palavraEscolhida = palavras[math.random(#palavras)]
 
-    -- Tabela para armazenar as letras que o usuário já acertou
     local letrasDescobertas = {}
 
     for i = 1, #palavraEscolhida do
         letrasDescobertas[i] = false
     end
 
-    -- Tabela para armazenar as letras que o usuário já tentou
     local letrasTentadas = {}
 
-    -- Configuração do limite de erros
     local errosMaximos = 5
     local errosCometidos = 0
 
     print("\n================================")
     print("         JOGO DA FORCA")
     print("================================")
-    print("Dica: Todas as palavras estão em minúsculo e sem acentos.")
+    --print("Dica: Todas as palavras estão em minúsculo e sem acentos.")
 
-    -- 3. Loop principal da partida
     while errosCometidos < errosMaximos do
 
-        -- Exibir a palavra com asteriscos nas letras não descobertas
         local exibicao = ""
         local ganhou = true
 
@@ -62,22 +68,19 @@ while jogarNovamente do
         print("\nPalavra: " .. exibicao)
         print("Tentativas erradas: " .. errosCometidos .. "/" .. errosMaximos)
 
-        -- Verificar condição de vitória
         if ganhou then
             print("\nParabéns! Você descobriu a palavra: " .. palavraEscolhida)
             break
         end
 
-        -- Pedir uma letra ao usuário
+
         io.write("Escolha uma letra: ")
         local palpite = io.read()
 
-        -- Validação básica da entrada
         if palpite and #palpite == 1 then
 
             palpite = palpite:lower()
 
-            -- Verificar se a letra já foi escolhida
             if letrasTentadas[palpite] then
 
                 print("Atenção! A letra '" .. palpite .. "' já foi escolhida.")
@@ -85,12 +88,10 @@ while jogarNovamente do
 
             else
 
-                -- Registrar a letra como já tentada
                 letrasTentadas[palpite] = true
 
                 local acertou = false
 
-                -- Verificar se a letra existe na palavra
                 for i = 1, #palavraEscolhida do
 
                     if palavraEscolhida:sub(i, i) == palpite then
@@ -120,7 +121,6 @@ while jogarNovamente do
 
     end
 
-    -- Condição de derrota
     if errosCometidos >= errosMaximos then
         print("\nGame Over! Você atingiu o limite de " ..
             errosMaximos .. " erros.")
@@ -128,7 +128,6 @@ while jogarNovamente do
         print("A palavra correta era: " .. palavraEscolhida)
     end
 
-    -- Perguntar se o jogador deseja jogar novamente
     print("\n================================")
 
     io.write("Deseja jogar novamente? (s/n): ")
